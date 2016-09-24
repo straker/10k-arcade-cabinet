@@ -18,7 +18,6 @@ $susy: (
 $font-size: 18px;
 $global-padding: 2.5em;
 
-/*
 $bg-c: #f6d9ba;
 $p-c: #fcd932;
 $s-c: #e40074;
@@ -26,8 +25,8 @@ $h-c: #75deaa;
 $m-c: #df81fc;
 $b-c: #eea942;
 $t-c: #7e90e9;
-*/
 
+/*
 $bg-c: #fff;
 $p-c: #000;
 $s-c: tint($p-c, 10%);
@@ -35,6 +34,7 @@ $h-c: tint($p-c, 20%);
 $m-c: tint($p-c, 30%);
 $b-c: tint($p-c, 40%);
 $t-c: tint($p-c, 50%);
+*/
 
 $rc: $bg-c, $p-c, $s-c, $h-c, $m-c, $b-c, $t-c;
 $color-w: 6%;
@@ -94,8 +94,8 @@ header {
 h1, h2 {
 	font-weight: bold;
 	line-height: 1em;
-	//text-shadow: .05em .08em 0px #fff;
-	text-shadow: .05em 0 0 #fff;
+	text-shadow: .05em .08em 0px #fff;
+	//text-shadow: .05em 0 0 #fff;
 }
 
 h1 {
@@ -118,9 +118,9 @@ p {
 	width: 100%;
 	display: block;
 	padding: $global-padding $global-padding 0 $global-padding;
-	//border: 8px solid $bg-c;
-	//border-left: 0;
-	//border-right: 0;
+	border: 8px solid $bg-c;
+	border-left: 0;
+	border-right: 0;
 	overflow: hidden;
 }
 
@@ -166,11 +166,12 @@ canvas {
 
 //GAME SPECIFIC
 
+/*
 .r {
 	background: $s-c;
 }
+*/
 
-/*
 #pong {
 	background: $p-c;
 }
@@ -194,7 +195,6 @@ canvas {
 #tetris {
 	background: $t-c;
 }
-*/
 
 // DESKTOP STYLES
 
