@@ -1,17 +1,12 @@
 // --------------------------------------------------
 // SNAKE
 // --------------------------------------------------
-var snake = (function() {
-  var snakeCanvas = querySelector('#s');
-  var snakeContext = snakeCanvas.getContext('2d');
-
+games.push( (function() {
   var SNAKE_SIZE = 5;
   var START_LENGTH = 4;
   var START_X = 100;
   var START_Y = 20;
   var COLOR = '#fff';
-
-  snakeContext.fillStyle = COLOR;
 
   var snake, pellet;
   var counter = 0;
@@ -21,9 +16,7 @@ var snake = (function() {
     {x: 20, y: 20},
     {x: 30, y: 75},
     {x: 90, y: 5},
-    {x: 70, y: 5},
-    {x: 70, y: 25},
-    {x: 100, y: 25}
+    {x: 70, y: 5}
   ];
 
   function reset() {
@@ -35,7 +28,6 @@ var snake = (function() {
       width: SNAKE_SIZE * START_LENGTH,
       height: SNAKE_SIZE,
       color: COLOR,
-      context: snakeContext,
       length: START_LENGTH,
       body: [],
       dead: false,
@@ -84,7 +76,7 @@ var snake = (function() {
       },
       render: function() {
         for (var i = 0, pos; (pos = this.body[i]); i++) {
-          snakeContext.fillRect(pos.x, pos.y, SNAKE_SIZE, SNAKE_SIZE);
+          kontra.context.fillRect(pos.x, pos.y, SNAKE_SIZE, SNAKE_SIZE);
         }
       }
     });
@@ -98,9 +90,9 @@ var snake = (function() {
       x: pelletPos[0].x,
       y: pelletPos[0].y,
       render: function() {
-        snakeContext.beginPath();
-        snakeContext.arc(this.x + 2.5, this.y + 2.5, 2.5, 0, 2 * Math.PI);
-        snakeContext.fill();
+        kontra.context.beginPath();
+        kontra.context.arc(this.x + 2.5, this.y + 2.5, 2.5, 0, 2 * Math.PI);
+        kontra.context.fill();
       }
     });
   }
@@ -119,10 +111,14 @@ var snake = (function() {
       }
     },
     render: function() {
-      snakeContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      kontra.context.fillStyle = COLOR;
+      kontra.context.strokeStyle = COLOR;
+
+      kontra.context.strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
       snake.render();
       pellet.render();
     },
     reset: reset
   };
-})();
+})() );
