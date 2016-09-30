@@ -1,5 +1,9 @@
-# Goal
+10k Arkade
+==========
 
-1. Create as many 10k classic games as I can in the time frame, including Pong, Tetris, Snake, Asteroids, Space Invaders, Missile Command, Breakout, Lunar Lander, Helicopter ...
-2. Main page is a preview of all games that fit in 10k. Each preview is a small looping sample of the game.
-3. For kicks can update the favicon as you play.
+10k Arkade is a 10k arcade cabinet that lets you play a few games for under 10k.
+
+![10k Arcade Cabinet](http://sklambert.com/10k-arcade-cabinet/10k-arcade.png)
+
+Created by [Steven Lambert](https://twitter.com/StevenKLambert)
+Art by [Matt Barton](https://twitter.com/mattbisme)
