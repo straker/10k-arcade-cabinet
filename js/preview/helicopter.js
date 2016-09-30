@@ -1,16 +1,9 @@
 // --------------------------------------------------
 // HELICOPTER
 // --------------------------------------------------
-var helicopter = (function() {
-  var helicopterCanvas = querySelector('#h');
-  var helicopterContext = helicopterCanvas.getContext('2d');
-
+game.games.push( (function() {
   var COLOR = '#fff';
   var HELICOPTER_SIZE = 5;
-
-  helicopterContext.fillStyle = COLOR;
-  helicopterContext.strokeStyle = COLOR;
-  helicopterContext.lineWidth = 3;
 
   var gaps = [
     {x: 33, length: 73},
@@ -83,9 +76,9 @@ var helicopter = (function() {
   function reset() {
     gapIndex = 0;
 
-    helicopter = sprite({
+    helicopter = kontra.sprite({
       x: 60,
-      y: 105,
+      y: 95,
       dx: 2,
       ddx: 0.7,
       update: function() {
@@ -106,11 +99,11 @@ var helicopter = (function() {
         this.x += this.dx;
       },
       render: function() {
-        helicopterContext.beginPath();
-        helicopterContext.moveTo(this.x, this.y);
-        helicopterContext.lineTo(this.x + HELICOPTER_SIZE, this.y - HELICOPTER_SIZE);
-        helicopterContext.lineTo(this.x + HELICOPTER_SIZE * 2, this.y);
-        helicopterContext.stroke();
+        kontra.context.beginPath();
+        kontra.context.moveTo(this.x, this.y);
+        kontra.context.lineTo(this.x + HELICOPTER_SIZE, this.y - HELICOPTER_SIZE);
+        kontra.context.lineTo(this.x + HELICOPTER_SIZE * 2, this.y);
+        kontra.context.stroke();
       }
     });
     helicopter.velocity.clamp(-2, 0, 2, 0);
@@ -131,43 +124,48 @@ var helicopter = (function() {
       }
     },
     render: function() {
-      helicopterContext.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      kontra.context.fillStyle = COLOR;
+      kontra.context.strokeStyle = COLOR;
+
+      kontra.context.strokeRect(0, 0, game.width, game.height);
+
+      kontra.context.lineWidth = 3;
 
       // gaps
-      helicopterContext.beginPath();
-      helicopterContext.moveTo(0, 0);
+      kontra.context.beginPath();
+      kontra.context.moveTo(0, 0);
 
-      for (var i = gapIndex, x = 0, gap; x < 30; i--, x++) {
+      for (var i = gapIndex, x = 0, gap; x < 22; i--, x++) {
         var gap = gaps[i];
         var y = HELICOPTER_SIZE * x;
-        helicopterContext.lineTo(gap.x, y);
+        kontra.context.lineTo(gap.x, y);
 
         if (i <= 0) {
           i = gaps.length;
         }
       }
 
-      helicopterContext.lineTo(0, CANVAS_HEIGHT);
-      helicopterContext.fill();
+      kontra.context.lineTo(0, game.height);
+      kontra.context.fill();
 
-      helicopterContext.beginPath();
-      helicopterContext.moveTo(CANVAS_WIDTH, 0);
+      kontra.context.beginPath();
+      kontra.context.moveTo(game.width, 0);
 
-      for (var i = gapIndex, x = 0, gap; x < 30; i--, x++) {
+      for (var i = gapIndex, x = 0, gap; x < 22; i--, x++) {
         var gap = gaps[i];
         var y = HELICOPTER_SIZE * x;
-        helicopterContext.lineTo(gap.x + gap.length, y);
+        kontra.context.lineTo(gap.x + gap.length, y);
 
         if (i <= 0) {
           i = gaps.length;
         }
       }
 
-      helicopterContext.lineTo(CANVAS_WIDTH, CANVAS_HEIGHT);
-      helicopterContext.fill();
+      kontra.context.lineTo(game.width, game.height);
+      kontra.context.fill();
 
       helicopter.render();
     },
     reset: reset
   };
-})();
+})() );

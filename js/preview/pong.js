@@ -1,33 +1,27 @@
 // --------------------------------------------------
 // PONG
 // --------------------------------------------------
-var pong = (function() {
-  var pongCanvas = querySelector('#p');
-  var pongContext = pongCanvas.getContext('2d');
-
+game.games.push( (function() {
   var PADDLE_WIDTH = 5;
   var PADDLE_HEIGHT = 25;
   var BALL_SIZE = 2.5;
-  var START_POSITION_Y = (CANVAS_HEIGHT / 2) - (PADDLE_HEIGHT / 2);
+  var START_POSITION_Y = (game.height / 2) - (PADDLE_HEIGHT / 2);
   var COLOR = '#fff';
-
-  pongContext.fillStyle = COLOR;
-  pongContext.font = '15px monospace';
 
   var paddle1, paddle2, ball;
 
   function reset() {
-    paddle1 = sprite({
+    paddle1 = kontra.sprite({
       x: PADDLE_WIDTH,
       y: START_POSITION_Y,
       width: PADDLE_WIDTH,
       height: PADDLE_HEIGHT,
       color: COLOR,
-      context: pongContext,
+      context: kontra.context,
       score: 0,
       dy: 2,
       update: function() {
-        if (ball.x < CANVAS_WIDTH) {
+        if (ball.x < game.width) {
           if (ball.y >= this.y + this.height / 2) {
             this.y += this.dy;
           }
@@ -37,19 +31,18 @@ var pong = (function() {
         }
       }
     });
-    paddle1.position.clamp(0, START_POSITION_Y, CANVAS_WIDTH, CANVAS_HEIGHT - PADDLE_HEIGHT);
+    paddle1.position.clamp(0, START_POSITION_Y, game.width, game.height - PADDLE_HEIGHT);
 
-    paddle2 = sprite({
-      x: CANVAS_WIDTH - PADDLE_WIDTH * 2,
-      y: CANVAS_HEIGHT - PADDLE_HEIGHT * 2,
+    paddle2 = kontra.sprite({
+      x: game.width - PADDLE_WIDTH * 2,
+      y: 0,
       width: PADDLE_WIDTH,
       height: PADDLE_HEIGHT,
       color: COLOR,
-      context: pongContext,
       score: 0,
       dy: 2,
       update: function() {
-        if (ball.x > CANVAS_WIDTH / 2) {
+        if (ball.x < game.width && (ball.x > game.width / 2 || ball.dx < 0) ) {
           if (ball.y >= this.y + this.height / 2 && !this.miss ||
              (this.miss && ball.y > this.y + this.height + 2)) {
             this.y += this.dy;
@@ -58,17 +51,20 @@ var pong = (function() {
             this.y -= this.dy;
           }
         }
+        else if (ball.x > game.width) {
+          this.y -= this.dy;
+        }
       }
     });
-    paddle2.position.clamp(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT - PADDLE_HEIGHT);
+    paddle2.position.clamp(0, 0, game.width, game.height - PADDLE_HEIGHT);
 
-    ball = sprite({
-      x: CANVAS_WIDTH / 2 - BALL_SIZE,
-      y: CANVAS_HEIGHT / 2 - BALL_SIZE,
+    ball = kontra.sprite({
+      x: game.width / 2 - BALL_SIZE,
+      y: game.height / 2 - BALL_SIZE,
       width: BALL_SIZE,
       height: BALL_SIZE,
       color: COLOR,
-      context: pongContext,
+      context: kontra.context,
       dx: -2,
       dy: 2,
       counter: 0,
@@ -83,21 +79,21 @@ var pong = (function() {
           }
         }
 
-        if (this.x >= CANVAS_WIDTH - PADDLE_WIDTH * 2.5 && !paddle2.miss) {
+        if (this.x >= game.width - PADDLE_WIDTH * 2.5 && !paddle2.miss) {
           this.dx = -this.dx;
         }
 
-        if (this.y <= 0 || this.y >= CANVAS_HEIGHT - this.height) {
+        if (this.y <= 0 || this.y >= game.height - this.height) {
           this.dy = -this.dy;
         }
 
-        if (this.x > CANVAS_WIDTH) {
+        if (this.x > game.width) {
           paddle1.score  = 1;
         }
 
         // pong controls when the reset of the games reset
-        if (this.x > CANVAS_WIDTH + 20) {
-          triggerReset();
+        if (this.x > game.width + 20) {
+          game.triggerReset();
         }
       }
     });
@@ -113,18 +109,27 @@ var pong = (function() {
       ball.update();
     },
     render: function() {
+      kontra.context.fillStyle = COLOR;
+      kontra.context.strokeStyle = COLOR;
+      kontra.context.font = '15px monospace';
+
+      kontra.context.strokeRect(0, 0, game.width, game.height);
+
       // middle divider
-      for(var i = 1; i < CANVAS_HEIGHT; i += 5) {
-        pongContext.fillRect(CANVAS_WIDTH / 2 - 2, i, 1, 2.5);
+      for(var i = 1; i < game.height; i += 5) {
+        kontra.context.fillRect(game.width / 2 - 2, i, 1, 2.5);
       }
 
       // score
-      pongContext.fillText(paddle1.score + ' ' + paddle2.score, 65, 15);
+      kontra.context.fillText(paddle1.score + ' ' + paddle2.score, game.width / 2 - 15, 15);
 
       paddle1.render();
       paddle2.render();
-      ball.render();
+
+      if (ball.x < game.width) {
+        ball.render();
+      }
     },
     reset: reset
   };
-})();
+})() );
