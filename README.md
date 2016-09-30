@@ -5,5 +5,5 @@
 
 ![10k Arcade Cabinet](http://sklambert.com/10k-arcade-cabinet/10k-arcade.png)
 
-Created by [Steven Lambert](https://twitter.com/StevenKLambert)
+Created by [Steven Lambert](https://twitter.com/StevenKLambert)  
 Art by [Matt Barton](https://twitter.com/mattbisme)
