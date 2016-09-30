@@ -1,7 +1,7 @@
 // --------------------------------------------------
 // SNAKE
 // --------------------------------------------------
-games.push( (function() {
+game.games.push( (function() {
   var SNAKE_SIZE = 5;
   var START_LENGTH = 4;
   var START_X = 100;
@@ -22,7 +22,7 @@ games.push( (function() {
   function reset() {
     pelletIndex = 1;
 
-    snake = sprite({
+    snake = kontra.sprite({
       x: START_X,
       y: 20,
       width: SNAKE_SIZE * START_LENGTH,
@@ -86,7 +86,7 @@ games.push( (function() {
       snake.body[i] = {x: START_X + (i * SNAKE_SIZE), y: START_Y};
     }
 
-    pellet = sprite({
+    pellet = kontra.sprite({
       x: pelletPos[0].x,
       y: pelletPos[0].y,
       render: function() {
@@ -114,7 +114,7 @@ games.push( (function() {
       kontra.context.fillStyle = COLOR;
       kontra.context.strokeStyle = COLOR;
 
-      kontra.context.strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      kontra.context.strokeRect(0, 0, game.width, game.height);
 
       snake.render();
       pellet.render();

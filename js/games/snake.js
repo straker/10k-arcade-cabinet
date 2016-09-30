@@ -132,7 +132,6 @@ game.snake = (function() {
 
   function reset() {
     counter = 0;
-    intro = false;
 
     snake.x = (WIDTH / 2 | 0) * SNAKE_SIZE;
     snake.y = (HEIGHT / 2 | 0) * SNAKE_SIZE;
@@ -144,10 +143,10 @@ game.snake = (function() {
 
     pellet.spawn();
   }
+  reset();
 
   // loop
   var counter = 0;
-  var intro = true;
   var loop = kontra.gameLoop({
     update: function(dt) {
       counter += dt;
@@ -155,21 +154,16 @@ game.snake = (function() {
       game.updateKeys();
 
       if (game.escPressed) {
-        counter = 0;
-        snake.body.length = 0;
-        snake.alive = false;
-        pellet.alive = false;
         loop.stop();
         game.goBack();
 
-        // prevent intro from displaying on last render loop
+        // prevent game from displaying on last render loop
         setTimeout(function() {
-          intro = true;
+          reset();
         }, 100);
       }
 
-      // set counter so pressing enter to load the game doesn't start the game
-      if (game.enterPressed && !snake.alive && counter > 0.16) {
+      if (game.enterPressed && !snake.alive) {
         reset();
       }
 
@@ -206,13 +200,6 @@ game.snake = (function() {
       }
     },
     render: function() {
-      if (intro) {
-        kontra.context.font = '60px monospace';
-        kontra.context.fillText('SNAKE', 120, 100);
-        kontra.context.font = '30px monospace';
-        kontra.context.fillText('Fire to begin', 95, 150);
-      }
-
       snake.render();
       pellet.render();
     },

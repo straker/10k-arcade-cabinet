@@ -1,8 +1,8 @@
 game.pong = (function() {
-  document.querySelector('#at').innerHTML = 'Instructions: Use the up and down arrow keys to move your paddle and bounce the ball to the computer paddle. As the ball moves back and forth across the screen, a sound will play to indicate how far away the ball is from your paddle. The more frequent the sound plays, the closer the ball is to your paddle. The less frequent the sound plays, the farther away it is. The sound also tells you if the ball is above or below your paddle. A higher pitch sound means the ball is above your paddle. A lower pitch sound means it\'s below your paddle. If the sound stops it means either you or the computer missed the ball. When this happens, press the enter or space key to restart the game. Finally, at the start of each game, the sound will play 4 times before launching the ball. The sound is at the exact pitch that indicates the ball is centered to your paddle, so use this to judge higher and lower pitches. To start, press space or enter. To return to the menu, press escape. To repeat these instructions, press r.';
+  document.querySelector('#at').innerHTML = 'Instructions: Press b to enter blind mode. Use the up and down arrow keys to move your paddle and bounce the ball to the computer paddle. As the ball moves back and forth across the screen, a sound will play to indicate how far away the ball is from your paddle. The more frequent the sound plays, the closer the ball is to your paddle. The less frequent the sound plays, the farther away it is. The sound also tells you if the ball is above or below your paddle. A higher pitch sound means the ball is above your paddle. A lower pitch sound means it\'s below your paddle. If the sound stops it means either you or the computer missed the ball. When this happens, press the enter or space key to restart the game. Finally, at the start of each game, the sound will play 4 times before launching the ball. The sound is at the exact pitch that indicates the ball is centered to your paddle, so use this to judge higher and lower pitches. To start, press space or enter. To return to the menu, press escape. To repeat these instructions, press r.';
 
   // states
-  var blindMode = true;
+  var blindMode = false;
   var canPlaySound = true;
 
   // constants
@@ -48,15 +48,12 @@ game.pong = (function() {
       request.send();
     }
 
-    getSound('/sounds/blip.mp3', 'blip');
-    getSound('/sounds/bounce.mp3', 'bounce');
-    getSound('/sounds/wallbounce.mp3', 'wallbounce');
+    getSound('/media/blip.mp3', 'blip');
+    getSound('/media/bounce.mp3', 'bounce');
+    getSound('/media/wallbounce.mp3', 'wallbounce');
   }
   catch (e) {
     canPlaySound = false;
-    if (blindMode) {
-      alert('Your browser does not support the Web Audio API and thus cannot play the sounds needed to support blind play. Please use a different browser to play this game.');
-    }
     return;
   }
 
@@ -108,11 +105,11 @@ game.pong = (function() {
     width: 10,
     height: 10,
     color: '#fff',
-    startMinSpeed: (blindMode ? 1 : 3),
-    startMaxSpeed: (blindMode ? 3 : 6.25),
     reset: function() {
       this.x = GAME_WIDTH / 2 - 5;
       this.y = GAME_HEIGHT / 2 - 5;
+      this.startMinSpeed = (blindMode ? 1 : 3);
+      this.startMaxSpeed = (blindMode ? 3 : 6.25);
       this.minSpeed = this.startMinSpeed;
       this.maxSpeed = this.startMaxSpeed;
       this.dx = 3;
@@ -237,18 +234,46 @@ game.pong = (function() {
     timer = 4;
     intro = true;
     ball.reset();
+
+    PADDLE_HEIGHT = (blindMode ? 80 : 50);
+
+    player.height = PADDLE_HEIGHT;
   }
 
+  // loop
   var loop = kontra.gameLoop({
     update: function(dt) {
       counter += dt;
 
-      if (kontra.keys.pressed('esc')) {
+      if (kontra.keys.pressed('b') && !ball.alive) {
+        blindMode = true;
+        reset();
+        ball.alive = false;
+        intro = false;
+
+        if (!canPlaySound) {
+          alert('Your browser does not support the Web Audio API and thus cannot play the sounds needed to support blind play. Please use a different browser to play this game.');
+        }
+
+        return;
+      }
+
+      if (game.escPressed) {
         counter = 0;
         intro = false;
         ball.alive = false;
         invisibleBall.alive = false;
         loop.stop();
+
+        // prevent player from jumping to new position on last render loop
+        setTimeout(function() {
+          player.x = PADDLE_WIDTH;
+          player.y = START_POSITION_Y;
+
+          computer.x = GAME_WIDTH - (PADDLE_WIDTH * 2);
+          computer.y = (GAME_HEIGHT / 2) - 25;
+        }, 100);
+
         game.goBack();
       }
 
@@ -261,7 +286,7 @@ game.pong = (function() {
       }
 
       // play 4 blips to let the player hear the sound they need to follow
-      if (intro) {
+      if (blindMode && intro) {
         if (counter > 1) {
           playSound(buffers.blip);
           timer--;
@@ -276,7 +301,7 @@ game.pong = (function() {
         game.updateKeys();
 
         // set counter so pressing enter to load the game doesn't start the game
-        if (game.enterPressed && !ball.alive && counter > 0.5) {
+        if (game.enterPressed && !ball.alive && counter > 0.16) {
           reset();
         }
 

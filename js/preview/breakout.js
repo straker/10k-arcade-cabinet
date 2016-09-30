@@ -7,7 +7,7 @@
 
 //   var COLORS = ['#f00', '#ffa500', '#19823a', '#ff0'];
 //   var GAME_X = 29;  // game is taller than it is wide
-//   var GAME_WIDTH = CANVAS_WIDTH - 29 * 2 - 1;
+//   var game.width = CANVAS_WIDTH - 29 * 2 - 1;
 //   var GAME_X_RIGHT = CANVAS_WIDTH - GAME_X - 3;
 //   var BRICK_START_Y = 30;
 //   var NUM_BRICKS = 112;
@@ -124,7 +124,7 @@
 //       breakoutContext.fillStyle = '#fff';
 //       breakoutContext.fillRect(GAME_X, 0, 2, CANVAS_HEIGHT);
 //       breakoutContext.fillRect(GAME_X_RIGHT, 0, 2, CANVAS_HEIGHT);
-//       breakoutContext.fillRect(GAME_X, 10, GAME_WIDTH, 5);
+//       breakoutContext.fillRect(GAME_X, 10, game.width, 5);
 //       breakoutContext.fillRect(GAME_X + 7, 15, 2, 7);
 //       breakoutContext.fillRect(GAME_X + 60, 15, 2, 7);
 

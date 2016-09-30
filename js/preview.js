@@ -1,170 +1,4 @@
 (function(window, document, kontra) {
-// constants
-var CANVAS_WIDTH = kontra.canvas.width;
-var CANVAS_HEIGHT = kontra.canvas.height;
-var GAME_PADDING = 5;
-var GAMES_PER_ROW = 3;
-var NUM_ROWS = 3;
-var GAME_WIDTH = (CANVAS_WIDTH - GAME_PADDING * GAMES_PER_ROW * 2) / GAMES_PER_ROW | 0;
-var GAME_HEIGHT = (CANVAS_HEIGHT - GAME_PADDING * NUM_ROWS * 2) / NUM_ROWS | 0;
-
-// references
-var sprite = kontra.sprite;
-
-// variables
-var selection = 0;
-var debounce = 1;
-var games = [];
-var gameBtns = document.querySelectorAll('.gb');
-
-for (var i = 0; i < gameBtns.length; i++) {
-  // bind i
-  (function(i) {
-    gameBtns[i].addEventListener('click', function() {
-      selection = i;
-    });
-  })(i);
-}
-
-// throttle resize event
-window.addEventListener('resize', resizeThrottler, false);
-
-var resizeTimeout;
-function resizeThrottler() {
-  // ignore resize events as long as an actualResizeHandler execution is in the queue
-  if ( !resizeTimeout ) {
-    resizeTimeout = setTimeout(function() {
-      resizeTimeout = null;
-      actualResizeHandler();
-
-     // The actualResizeHandler will execute at a rate of 15fps
-     }, 66);
-  }
-}
-
-function actualResizeHandler() {
-  var width = parseInt(getComputedStyle(kontra.canvas).width);
-  var height = parseInt(getComputedStyle(kontra.canvas).height);
-
-  for (var i = 0; i < gameBtns.length; i++) {
-    gameBtns[i].style.width = width * .30956 + 'px';
-    gameBtns[i].style.height = height * .3029 + 'px';
-    gameBtns[i].style.padding = width * .0119 + 'px';
-  }
-}
-
-/**
- * Reset all previews.
- */
-function triggerReset() {
-  for (var i = 0; i < games.length; i++) {
-    games[i].reset();
-  }
-}
-
-/**
- * Lazy load the selected game and start it.
- */
-function gameSelected() {
-  var selectedGame = gameBtns[selection].getAttribute('data-game');
-
-  if (game[selectedGame]) {
-    loadGame(game[selectedGame]);
-  }
-  else if (!document.querySelector('script[src="js/' + selectedGame + '.js"]')) {
-    var script = document.createElement('script');
-    script.onload = function() {
-      loadGame(game[selectedGame]);
-    };
-    script.src = 'js/' + selectedGame + '.js';
-    document.head.appendChild(script);
-  }
-}
-
-/**
- * Load a game.
- */
-function loadGame(selectedGame) {
-  gameBtns[selection].blur();
-  gameBtns[selection].setAttribute('tabindex', -1);
-  gameBtns[selection].removeAttribute('aria-selected');
-
-  game.loop.stop();
-  game.selectedGame = selectedGame;
-  selectedGame.start();
-  kontra.canvas.setAttribute('tabindex', 0);
-  kontra.canvas.focus();
-}
-
-/**
- * Go back to the preview menu.
- */
-game.goBack = function() {
-  game.loop.start();
-  gameBtns[selection].focus();
-  document.querySelector('#at').innerHTML = '';
-};
-
-// --------------------------------------------------
-// GAME_LOOP
-// --------------------------------------------------
-game.loop = kontra.gameLoop({
-  update: function(dt) {
-    game.updateKeys();
-
-    debounce += dt;
-
-    // update each preview
-    for (var i = 0; i < games.length; i++) {
-      games[i].update(dt);
-    }
-
-    // debounce user input
-    if (debounce > 0.25) {
-      if (game.rightPressed) {
-        gameBtns[selection].setAttribute('tabindex', -1);
-        gameBtns[selection].removeAttribute('aria-selected');
-        selection = (selection == games.length - 1 ? 2 : selection + 1);
-      }
-      else if (game.leftPressed) {
-        gameBtns[selection].setAttribute('tabindex', -1);
-        gameBtns[selection].removeAttribute('aria-selected');
-        selection = (selection == 0 ? 0 : selection - 1);
-      }
-
-      if (game.rightPressed || game.leftPressed) {
-        gameBtns[selection].focus();
-        gameBtns[selection].setAttribute('tabindex', 0);
-        gameBtns[selection].setAttribute('aria-selected', true);
-        debounce = 0;
-      }
-
-      if (game.enterPressed) {
-        gameSelected();
-        debounce = 0;
-      }
-    }
-
-    else if (!game.rightPressed && !game.leftPressed) {
-      debounce = 1;
-    }
-  },
-  render: function() {
-    for (var i = 0; i < games.length; i++) {
-      kontra.context.save();
-      kontra.context.translate(GAME_PADDING + GAME_PADDING * i * 2 + GAME_WIDTH * i, GAME_PADDING);
-
-      games[i].render();
-
-      kontra.context.restore();
-    }
-  },
-  fps: 30
-});
-
-game.loop.start();
-gameBtns[0].focus();
-
 // // --------------------------------------------------
 // // BREAKOUT
 // // --------------------------------------------------
@@ -174,7 +8,7 @@ gameBtns[0].focus();
 
 //   var COLORS = ['#f00', '#ffa500', '#19823a', '#ff0'];
 //   var GAME_X = 29;  // game is taller than it is wide
-//   var GAME_WIDTH = CANVAS_WIDTH - 29 * 2 - 1;
+//   var game.width = CANVAS_WIDTH - 29 * 2 - 1;
 //   var GAME_X_RIGHT = CANVAS_WIDTH - GAME_X - 3;
 //   var BRICK_START_Y = 30;
 //   var NUM_BRICKS = 112;
@@ -291,7 +125,7 @@ gameBtns[0].focus();
 //       breakoutContext.fillStyle = '#fff';
 //       breakoutContext.fillRect(GAME_X, 0, 2, CANVAS_HEIGHT);
 //       breakoutContext.fillRect(GAME_X_RIGHT, 0, 2, CANVAS_HEIGHT);
-//       breakoutContext.fillRect(GAME_X, 10, GAME_WIDTH, 5);
+//       breakoutContext.fillRect(GAME_X, 10, game.width, 5);
 //       breakoutContext.fillRect(GAME_X + 7, 15, 2, 7);
 //       breakoutContext.fillRect(GAME_X + 60, 15, 2, 7);
 
@@ -328,7 +162,7 @@ gameBtns[0].focus();
 // --------------------------------------------------
 // HELICOPTER
 // --------------------------------------------------
-games.push( (function() {
+game.games.push( (function() {
   var COLOR = '#fff';
   var HELICOPTER_SIZE = 5;
 
@@ -403,7 +237,7 @@ games.push( (function() {
   function reset() {
     gapIndex = 0;
 
-    helicopter = sprite({
+    helicopter = kontra.sprite({
       x: 60,
       y: 95,
       dx: 2,
@@ -454,7 +288,7 @@ games.push( (function() {
       kontra.context.fillStyle = COLOR;
       kontra.context.strokeStyle = COLOR;
 
-      kontra.context.strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      kontra.context.strokeRect(0, 0, game.width, game.height);
 
       kontra.context.lineWidth = 3;
 
@@ -472,11 +306,11 @@ games.push( (function() {
         }
       }
 
-      kontra.context.lineTo(0, GAME_HEIGHT);
+      kontra.context.lineTo(0, game.height);
       kontra.context.fill();
 
       kontra.context.beginPath();
-      kontra.context.moveTo(GAME_WIDTH, 0);
+      kontra.context.moveTo(game.width, 0);
 
       for (var i = gapIndex, x = 0, gap; x < 22; i--, x++) {
         var gap = gaps[i];
@@ -488,7 +322,7 @@ games.push( (function() {
         }
       }
 
-      kontra.context.lineTo(GAME_WIDTH, GAME_HEIGHT);
+      kontra.context.lineTo(game.width, game.height);
       kontra.context.fill();
 
       helicopter.render();
@@ -758,17 +592,17 @@ games.push( (function() {
 // --------------------------------------------------
 // PONG
 // --------------------------------------------------
-games.push( (function() {
+game.games.push( (function() {
   var PADDLE_WIDTH = 5;
   var PADDLE_HEIGHT = 25;
   var BALL_SIZE = 2.5;
-  var START_POSITION_Y = (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2);
+  var START_POSITION_Y = (game.height / 2) - (PADDLE_HEIGHT / 2);
   var COLOR = '#fff';
 
   var paddle1, paddle2, ball;
 
   function reset() {
-    paddle1 = sprite({
+    paddle1 = kontra.sprite({
       x: PADDLE_WIDTH,
       y: START_POSITION_Y,
       width: PADDLE_WIDTH,
@@ -778,7 +612,7 @@ games.push( (function() {
       score: 0,
       dy: 2,
       update: function() {
-        if (ball.x < GAME_WIDTH) {
+        if (ball.x < game.width) {
           if (ball.y >= this.y + this.height / 2) {
             this.y += this.dy;
           }
@@ -788,10 +622,10 @@ games.push( (function() {
         }
       }
     });
-    paddle1.position.clamp(0, START_POSITION_Y, GAME_WIDTH, GAME_HEIGHT - PADDLE_HEIGHT);
+    paddle1.position.clamp(0, START_POSITION_Y, game.width, game.height - PADDLE_HEIGHT);
 
-    paddle2 = sprite({
-      x: GAME_WIDTH - PADDLE_WIDTH * 2,
+    paddle2 = kontra.sprite({
+      x: game.width - PADDLE_WIDTH * 2,
       y: 0,
       width: PADDLE_WIDTH,
       height: PADDLE_HEIGHT,
@@ -799,7 +633,7 @@ games.push( (function() {
       score: 0,
       dy: 2,
       update: function() {
-        if (ball.x < GAME_WIDTH && (ball.x > GAME_WIDTH / 2 || ball.dx < 0) ) {
+        if (ball.x < game.width && (ball.x > game.width / 2 || ball.dx < 0) ) {
           if (ball.y >= this.y + this.height / 2 && !this.miss ||
              (this.miss && ball.y > this.y + this.height + 2)) {
             this.y += this.dy;
@@ -808,16 +642,16 @@ games.push( (function() {
             this.y -= this.dy;
           }
         }
-        else if (ball.x > GAME_WIDTH) {
+        else if (ball.x > game.width) {
           this.y -= this.dy;
         }
       }
     });
-    paddle2.position.clamp(0, 0, GAME_WIDTH, GAME_HEIGHT - PADDLE_HEIGHT);
+    paddle2.position.clamp(0, 0, game.width, game.height - PADDLE_HEIGHT);
 
-    ball = sprite({
-      x: GAME_WIDTH / 2 - BALL_SIZE,
-      y: GAME_HEIGHT / 2 - BALL_SIZE,
+    ball = kontra.sprite({
+      x: game.width / 2 - BALL_SIZE,
+      y: game.height / 2 - BALL_SIZE,
       width: BALL_SIZE,
       height: BALL_SIZE,
       color: COLOR,
@@ -836,21 +670,21 @@ games.push( (function() {
           }
         }
 
-        if (this.x >= GAME_WIDTH - PADDLE_WIDTH * 2.5 && !paddle2.miss) {
+        if (this.x >= game.width - PADDLE_WIDTH * 2.5 && !paddle2.miss) {
           this.dx = -this.dx;
         }
 
-        if (this.y <= 0 || this.y >= GAME_HEIGHT - this.height) {
+        if (this.y <= 0 || this.y >= game.height - this.height) {
           this.dy = -this.dy;
         }
 
-        if (this.x > GAME_WIDTH) {
+        if (this.x > game.width) {
           paddle1.score  = 1;
         }
 
         // pong controls when the reset of the games reset
-        if (this.x > GAME_WIDTH + 20) {
-          triggerReset();
+        if (this.x > game.width + 20) {
+          game.triggerReset();
         }
       }
     });
@@ -870,20 +704,20 @@ games.push( (function() {
       kontra.context.strokeStyle = COLOR;
       kontra.context.font = '15px monospace';
 
-      kontra.context.strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      kontra.context.strokeRect(0, 0, game.width, game.height);
 
       // middle divider
-      for(var i = 1; i < GAME_HEIGHT; i += 5) {
-        kontra.context.fillRect(GAME_WIDTH / 2 - 2, i, 1, 2.5);
+      for(var i = 1; i < game.height; i += 5) {
+        kontra.context.fillRect(game.width / 2 - 2, i, 1, 2.5);
       }
 
       // score
-      kontra.context.fillText(paddle1.score + ' ' + paddle2.score, GAME_WIDTH / 2 - 15, 15);
+      kontra.context.fillText(paddle1.score + ' ' + paddle2.score, game.width / 2 - 15, 15);
 
       paddle1.render();
       paddle2.render();
 
-      if (ball.x < GAME_WIDTH) {
+      if (ball.x < game.width) {
         ball.render();
       }
     },
@@ -894,7 +728,7 @@ games.push( (function() {
 // --------------------------------------------------
 // SNAKE
 // --------------------------------------------------
-games.push( (function() {
+game.games.push( (function() {
   var SNAKE_SIZE = 5;
   var START_LENGTH = 4;
   var START_X = 100;
@@ -915,7 +749,7 @@ games.push( (function() {
   function reset() {
     pelletIndex = 1;
 
-    snake = sprite({
+    snake = kontra.sprite({
       x: START_X,
       y: 20,
       width: SNAKE_SIZE * START_LENGTH,
@@ -979,7 +813,7 @@ games.push( (function() {
       snake.body[i] = {x: START_X + (i * SNAKE_SIZE), y: START_Y};
     }
 
-    pellet = sprite({
+    pellet = kontra.sprite({
       x: pelletPos[0].x,
       y: pelletPos[0].y,
       render: function() {
@@ -1007,7 +841,7 @@ games.push( (function() {
       kontra.context.fillStyle = COLOR;
       kontra.context.strokeStyle = COLOR;
 
-      kontra.context.strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      kontra.context.strokeRect(0, 0, game.width, game.height);
 
       snake.render();
       pellet.render();
@@ -1032,8 +866,8 @@ games.push( (function() {
 //   var TETRIMINO_WIDTH = 5;
 //   var GAME_X = 53;  // game is taller than it is wide
 //   var GAME_Y = 10;
-//   var GAME_WIDTH = TETRIMINO_WIDTH * BOARD_WIDTH;
-//   var GAME_HEIGHT = TETRIMINO_WIDTH * BOARD_HEIGHT;
+//   var game.width = TETRIMINO_WIDTH * BOARD_WIDTH;
+//   var game.height = TETRIMINO_WIDTH * BOARD_HEIGHT;
 //   var GAME_X_RIGHT = CANVAS_WIDTH - GAME_X - 1;
 //   var BOX_WIDTH = 35;
 //   var BOX_HEIGHT = 10;
@@ -1219,10 +1053,10 @@ games.push( (function() {
 
 //       // walls
 //       tetrisContext.fillStyle = '#fff';
-//       tetrisContext.fillRect(GAME_X, GAME_Y, GAME_WIDTH + 4, 2);
-//       tetrisContext.fillRect(GAME_X_RIGHT, GAME_Y, 2, GAME_HEIGHT + 2);
-//       tetrisContext.fillRect(GAME_X, GAME_Y + GAME_HEIGHT, GAME_WIDTH + 4, 2);
-//       tetrisContext.fillRect(GAME_X, GAME_Y, 2, GAME_HEIGHT);
+//       tetrisContext.fillRect(GAME_X, GAME_Y, game.width + 4, 2);
+//       tetrisContext.fillRect(GAME_X_RIGHT, GAME_Y, 2, game.height + 2);
+//       tetrisContext.fillRect(GAME_X, GAME_Y + game.height, game.width + 4, 2);
+//       tetrisContext.fillRect(GAME_X, GAME_Y, 2, game.height);
 
 //       // time box
 //       tetrisContext.fillRect(10, 12, 4, 1);

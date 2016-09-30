@@ -3,48 +3,58 @@
 	<head>
 		<title>10k Apart</title>
 		<meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no">
-		<link rel="stylesheet" href="styles.css">
+		<link rel="stylesheet" href="styles/arcade.css">
 		<!-- <link rel="stylesheet" href="styles/screen.css"> -->
 		<script src="js/kontra.min.js"></script>
 	</head>
 	<body ontouchstart="">
 		<main>
 			<div class="a">
+				<div class="w">
+					<div class="cw">
+						<canvas id="s" width="420" height="350" aria-describedby="at">
+							Your browser does not support the canvas element. Please use a different browser.
+						</canvas>
+						<div class="sro" id="at"></div>
 
-				<div class="cw">
-					<canvas id="s" width="420" height="350" aria-describedby="at"></canvas>
-					<div class="sro" id="at"></div>
-
-					<div class="gbw" role="application">
-						<!-- game selection acts like a simple tab list for a11y -->
-						<button data-game="helicoptor" class="gb" tabindex="0" aria-selected="true"><span class="sro">Play Helicopter</span></button><!--
-						--><button data-game="pong" class="gb" tabindex="-1"><span class="sro">Play Pong (blind accessible)</span></button><!--
-						--><button data-game="snake" class="gb" tabindex="-1"><span class="sro">Play Snake</span></button>
+						<div class="gbw" role="application">
+							<!-- game selection acts like a simple tab list for a11y -->
+							<button data-game="helicopter" class="gb" tabindex="0" aria-selected="true"><span class="sro">Play Helicopter</span></button><!--
+							--><button data-game="pong" class="gb" tabindex="-1"><span class="sro">Play Pong (blind accessible)</span></button><!--
+							--><button data-game="snake" class="gb" tabindex="-1"><span class="sro">Play Snake</span></button>
+						</div>
 					</div>
+
+					<div class="c">
+
+						<div class="jw">
+							<div id="j"></div>
+							<div class="p">
+								<div class="ut t" aria-hidden="true">▲<br>(<kbd>W</kbd>, <kbd>Z</kbd>)</div>
+								<div class="rt t" aria-hidden="true">&#9658<br>(<kbd>D</kbd>)</div>
+								<div class="dt t" aria-hidden="true">▼<br>(<kbd>S</kbd>)</div>
+								<div class="lt t" aria-hidden="true">&#9668 <br>(<kbd>A</kbd>, <kbd>Q</kbd>)</div>
+							</div>
+						</div>
+
+						<div class="fb">
+							<button tabindex="-1" id="f" class="b"><span class="sro">Fire</span></button>
+							<div class="bh"></div>
+							<div class="ft t" aria-hidden="true">Fire<br>(<kbd>space</kbd>, <kbd>enter</kbd>)</div>
+						</div>
+
+						<div class="mb">
+							<button tabindex="-1" id="m" class="b"><span class="sro">Menu</span></button>
+							<div class="bh bw"></div>
+							<div class="mt t" aria-hidden="true">Menu<br>(<kbd>esc</kbd>)</div>
+						</div>
+					</div>
+
 				</div>
-
-				<div class="c">
-					<div id="j"></div>
-					<!-- <div class="stick"></div> -->
-					<div class="p"></div>
-					<div class="ut t" aria-hidden="true">▲<br>(<kbd>W</kbd>, <kbd>Z</kbd>)</div>
-					<div class="rt t" aria-hidden="true">&#9658<br>(<kbd>D</kbd>)</div>
-					<div class="dt t" aria-hidden="true">▼<br>(<kbd>S</kbd>)</div>
-					<div class="lt t" aria-hidden="true">&#9668 <br>(<kbd>A</kbd>, <kbd>Q</kbd>)</div>
-
-					<button tabindex="-1" id="f" class="b"><span class="sro">Fire</span></button>
-					<div class="bh"></div>
-					<div class="ft t" aria-hidden="true">Fire<br>(<kbd>space</kbd>, <kbd>enter</kbd>)</div>
-
-					<button tabindex="-1" id="m" class="b"><span class="sro">Menu</span></button>
-					<div class="bh bw"></div>
-					<div class="mt t" aria-hidden="true">Menu<br>(<kbd>esc</kbd>)</div>
-				</div>
-
 			</div>
 		</main>
 
-		<script src="js/scripts.js"></script>
+		<script src="js/arcade.js"></script>
 		<script src="js/preview.js"></script>
 		<!-- <script src="js/pong.js"></script>
 		<script>game.pong.start();</script> -->

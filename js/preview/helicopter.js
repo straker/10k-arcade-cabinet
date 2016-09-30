@@ -1,7 +1,7 @@
 // --------------------------------------------------
 // HELICOPTER
 // --------------------------------------------------
-games.push( (function() {
+game.games.push( (function() {
   var COLOR = '#fff';
   var HELICOPTER_SIZE = 5;
 
@@ -76,7 +76,7 @@ games.push( (function() {
   function reset() {
     gapIndex = 0;
 
-    helicopter = sprite({
+    helicopter = kontra.sprite({
       x: 60,
       y: 95,
       dx: 2,
@@ -127,7 +127,7 @@ games.push( (function() {
       kontra.context.fillStyle = COLOR;
       kontra.context.strokeStyle = COLOR;
 
-      kontra.context.strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      kontra.context.strokeRect(0, 0, game.width, game.height);
 
       kontra.context.lineWidth = 3;
 
@@ -145,11 +145,11 @@ games.push( (function() {
         }
       }
 
-      kontra.context.lineTo(0, GAME_HEIGHT);
+      kontra.context.lineTo(0, game.height);
       kontra.context.fill();
 
       kontra.context.beginPath();
-      kontra.context.moveTo(GAME_WIDTH, 0);
+      kontra.context.moveTo(game.width, 0);
 
       for (var i = gapIndex, x = 0, gap; x < 22; i--, x++) {
         var gap = gaps[i];
@@ -161,7 +161,7 @@ games.push( (function() {
         }
       }
 
-      kontra.context.lineTo(GAME_WIDTH, GAME_HEIGHT);
+      kontra.context.lineTo(game.width, game.height);
       kontra.context.fill();
 
       helicopter.render();

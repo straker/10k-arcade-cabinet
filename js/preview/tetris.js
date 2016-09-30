@@ -14,8 +14,8 @@
 //   var TETRIMINO_WIDTH = 5;
 //   var GAME_X = 53;  // game is taller than it is wide
 //   var GAME_Y = 10;
-//   var GAME_WIDTH = TETRIMINO_WIDTH * BOARD_WIDTH;
-//   var GAME_HEIGHT = TETRIMINO_WIDTH * BOARD_HEIGHT;
+//   var game.width = TETRIMINO_WIDTH * BOARD_WIDTH;
+//   var game.height = TETRIMINO_WIDTH * BOARD_HEIGHT;
 //   var GAME_X_RIGHT = CANVAS_WIDTH - GAME_X - 1;
 //   var BOX_WIDTH = 35;
 //   var BOX_HEIGHT = 10;
@@ -201,10 +201,10 @@
 
 //       // walls
 //       tetrisContext.fillStyle = '#fff';
-//       tetrisContext.fillRect(GAME_X, GAME_Y, GAME_WIDTH + 4, 2);
-//       tetrisContext.fillRect(GAME_X_RIGHT, GAME_Y, 2, GAME_HEIGHT + 2);
-//       tetrisContext.fillRect(GAME_X, GAME_Y + GAME_HEIGHT, GAME_WIDTH + 4, 2);
-//       tetrisContext.fillRect(GAME_X, GAME_Y, 2, GAME_HEIGHT);
+//       tetrisContext.fillRect(GAME_X, GAME_Y, game.width + 4, 2);
+//       tetrisContext.fillRect(GAME_X_RIGHT, GAME_Y, 2, game.height + 2);
+//       tetrisContext.fillRect(GAME_X, GAME_Y + game.height, game.width + 4, 2);
+//       tetrisContext.fillRect(GAME_X, GAME_Y, 2, game.height);
 
 //       // time box
 //       tetrisContext.fillRect(10, 12, 4, 1);

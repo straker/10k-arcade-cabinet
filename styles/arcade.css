@@ -1,2 +1,308 @@
-html,body,main{height:100%;overflow:hidden;padding:0;margin:0;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default}body{background:linear-gradient(to bottom, #f6d9ba 32%,#fcd932 32%,#fcd932 38%,#e40074 38%,#e40074 44%,#75deaa 44%,#75deaa 50%,#df81fc 50%,#df81fc 56%,#eea942 56%,#eea942 62%,#7e90e9 62%,#7e90e9 68%,#f6d9ba 68%)}main{background:url(/assets/bg.png)}button{border:0}.controls{text-align:center}#joystick{width:35px;height:35px;border-radius:50%;background-color:red;background-image:linear-gradient(red, #f55 2%, #B30000 55%, red 98%);box-shadow:0 10px 10px rgba(0,0,0,0.5);position:relative;top:0;right:0;bottom:0;left:0;transition:all 0.1s;display:inline-block;z-index:1}#joystick.left{right:20px;left:-20px;top:4px}#joystick.right{right:-20px;left:20px;top:4px}#joystick.up{bottom:-7px;top:7px}#joystick.down{bottom:-20px;top:20px}.stick{width:5px;height:25px;background:#6f7377;position:absolute;top:35px;left:15px;z-index:1;transition:all 0.1s}#joystick.left+.stick{transform:rotate(-30deg);left:9px}#joystick.right+.stick{transform:rotate(30deg);left:21px}#fire{background:#f00;width:30px;height:20px;border-radius:50%;border:0;margin-left:117px;background-image:linear-gradient(red, #f55 2%, #B30000 55%, red 98%);box-shadow:0px 3px 0px #b30000;position:absolute;border:1px solid #B30000}#fire.active{box-shadow:none;top:42px}.button-holder{position:absolute;z-index:-1;width:36px;height:26px;border-radius:50%;border:10px solid #004265;background:#f00;top:41px;left:115px;box-sizing:border-box}.arcade{background:url(/assets/arcade.svg) no-repeat center;height:100%;background-size:600px;background-position:center -100px;position:relative}canvas{width:100%;height:100%;position:absolute}.c{position:absolute;top:53%;left:50%;transform:translate(-50%, -50%);width:420px;height:350px;background:black;display:inline-block}.c:before{content:'';position:absolute;top:0;right:0;bottom:0;left:0;background:linear-gradient(to bottom, rgba(0,0,0,0.25), transparent 1px);background-size:100% 2px;z-index:1}.controls{position:absolute;bottom:174px;left:50%;transform:translateX(-50%)}.plate{position:absolute;width:60px;height:45px;border-radius:50%;background:#336884;left:-12px;top:38px}.plate:before{content:'';width:30px;height:20px;border-radius:50%;background:#004265;display:block;top:11px;left:14px;position:absolute;border:1px solid #222A2C}.game{display:inline-block;width:30.956%;height:30.29%;padding:5px;position:relative;z-index:5;margin:0;background:transparent;box-sizing:content-box}.sro{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);border:0}.text{color:white;font-family:arial;position:absolute;width:110px;font-size:15px}.fire-text{left:78px;top:73px}.up{top:19px;left:-37px}.right{top:51px;left:10px}.down{top:88px;left:-37px}.left{top:51px;left:-129px;text-align:right}
-/*# sourceMappingURL=arcade.css.map */
+/* elements */
+html, body, main {
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default; }
+
+body {
+  background: linear-gradient(to bottom, #f6d9ba 32%, #fcd932 32%, #fcd932 38%, #e40074 38%, #e40074 44%, #75deaa 44%, #75deaa 50%, #df81fc 50%, #df81fc 56%, #eea942 56%, #eea942 62%, #7e90e9 62%, #7e90e9 68%, #f6d9ba 68%); }
+
+main {
+  background: url(/media/bg.png); }
+
+button {
+  border: 0; }
+
+button:focus {
+  outline: 2px groove #3B99FC; }
+
+canvas {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  background: black; }
+
+/* arcade */
+.a {
+  background: url(/media/arcade.svg) no-repeat center;
+  height: 100%;
+  background-size: 100%;
+  background-position: center -27px;
+  position: relative;
+  max-width: 553px;
+  margin: 0 auto; }
+
+@media (max-width: 375px) {
+  .a {
+    background-position: center -18px; } }
+
+.w {
+  position: relative;
+  max-width: 76%;
+  max-height: 50%;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 60%; }
+
+/* canvas wrapper */
+.cw {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  max-height: 350px; }
+
+.cw:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent 1px);
+  background-size: 100% 2px;
+  z-index: 1; }
+
+/* game button wrapper */
+.gbw {
+  width: 100%;
+  height: 100%; }
+
+/* game button */
+.gb {
+  display: inline-block;
+  width: 30.956%;
+  height: 30.29%;
+  padding: 5px;
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  background: transparent;
+  box-sizing: content-box; }
+
+.hide .gb {
+  display: none; }
+
+/* controls */
+.c {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 14%; }
+
+.c *:not(br):not(kbd),
+.c *:before {
+  position: absolute; }
+
+/* joystick */
+.jw {
+  left: 27%;
+  width: 100%;
+  height: 100%; }
+
+#j {
+  width: 8.33%;
+  height: 30.88%;
+  padding: 10px;
+  position: relative;
+  left: -10px;
+  top: 17%; }
+
+@media (max-width: 425px) {
+  #j {
+    padding: 20px;
+    left: -19px; } }
+
+#j:before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: red;
+  background-image: linear-gradient(red, #FF5555 2%, #B30000 55%, red 98%);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: all 0.1s;
+  display: inline-block;
+  z-index: 1; }
+
+/* up, right, down, left */
+#j.l:before {
+  left: -20px;
+  top: 4px; }
+
+#j.r:before {
+  right: -20px;
+  left: 20px;
+  top: 4px; }
+
+#j.u:before {
+  top: -7px;
+  bottom: 7px; }
+
+#j.d:before {
+  bottom: -20px;
+  top: 20px; }
+
+/* plate */
+.p {
+  width: 14.28%;
+  height: 39.7%;
+  border-radius: 50%;
+  background: #336884;
+  left: -2.86%;
+  bottom: 0; }
+
+.p:before {
+  content: '';
+  width: 50%;
+  height: 44.45%;
+  border-radius: 50%;
+  background: #004265;
+  display: block;
+  top: 23.15%;
+  left: 22.94%;
+  border: 1px solid #222A2C; }
+
+/* up, right, down, left text */
+.ut {
+  top: -24px;
+  left: -26px; }
+
+.rt {
+  top: 11px;
+  left: 15px; }
+
+.dt {
+  top: 47px;
+  left: -26px; }
+
+.lt {
+  top: 11px;
+  left: -110px;
+  text-align: right; }
+
+/* fire */
+.fb {
+  left: 50%;
+  bottom: 12%;
+  width: 11.9%;
+  height: 35.29%; }
+
+.b {
+  width: 60%;
+  height: 50%;
+  top: 0;
+  left: 0;
+  background: transparent;
+  padding: 10px;
+  box-sizing: content-box;
+  z-index: 1; }
+
+.b:active,
+.b.active {
+  top: 4px; }
+
+.b:before {
+  content: '';
+  background: #f00;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 0;
+  background-image: linear-gradient(red, #FF5555 2%, #B30000 55%, red 98%);
+  box-shadow: 0px 3px 0px #B30000;
+  border: 1px solid #B30000;
+  display: inline-block;
+  position: relative; }
+
+.b:active:before,
+.b.active:before {
+  box-shadow: none; }
+
+/* button holder */
+.bh {
+  width: 72%;
+  height: 65%;
+  border-radius: 50%;
+  border: 3px solid #336884;
+  background: #f00;
+  top: 10px;
+  left: 5px; }
+
+@media (max-width: 425px) {
+  .b:active,
+  .b.active {
+    top: 2px; }
+  .bh {
+    left: 6px; }
+  .b:before {
+    box-shadow: 0px 1px 0px #B30000; } }
+
+/* fire text */
+.ft, .mt {
+  top: 105%;
+  left: -61%; }
+
+/* menu button */
+.mb {
+  left: 80%;
+  bottom: 30%;
+  width: 11.9%;
+  height: 35.29%; }
+
+#m:before {
+  background-image: linear-gradient(white, #F5F5F5 2%, #D6D6D6 55%, white 98%);
+  border: 1px solid #D6D6D6;
+  box-shadow: 0px 3px 0px #D6D6D6; }
+
+@media (max-width: 425px) {
+  #m:before {
+    box-shadow: 0px 1px 0px #D6D6D6; } }
+
+#m:active,
+#m.active {
+  top: 2px; }
+
+#m:active:before,
+#m.active:before {
+  box-shadow: none; }
+
+.bw {
+  background: #fff; }
+
+/* screen reader only */
+.sro {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0; }
+
+/* text */
+.t {
+  color: white;
+  font-family: arial;
+  position: absolute;
+  width: 110px;
+  font-size: 15px; }
+
+@media (max-width: 1000px) {
+  .t {
+    display: none; } }
