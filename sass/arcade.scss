@@ -1,0 +1,272 @@
+$bg-c: #f6d9ba;
+$p-c: #fcd932;
+$s-c: #e40074;
+$h-c: #75deaa;
+$m-c: #df81fc;
+$b-c: #eea942;
+$t-c: #7e90e9;
+
+$rc: $bg-c, $p-c, $s-c, $h-c, $m-c, $b-c, $t-c;
+$color-w: 6%;
+$colorList: ();
+
+@for $i from 1 through length($rc) {
+	$nc: $i + 1;
+	@if $nc > length($rc) {
+		$nc: 1;
+	}
+	@else {
+	}
+	$color: nth($rc, $i);
+	$color-n: nth($rc, $nc);
+	$position: ((100% - $color-w * (length($rc) - 1)) / 2) + ($color-w * ($i - 1));
+	$colorList: append($colorList, $color $position, comma);
+	$colorList: append($colorList, $color-n $position, comma);
+}
+
+$base-color: #004265;
+
+html, body, main {
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+body {
+	background: linear-gradient(to bottom, $colorList);
+}
+
+main {
+	background: url(/assets/bg.png);
+}
+
+button {
+  border: 0;
+}
+
+.controls {
+  text-align: center;
+}
+
+#joystick {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: red;
+  /*box-shadow: inset 0 -5px 20px rgba(0,0,0,0.5), inset 0 15px 20px rgba(255,255,255,0.5), 0 5px 10px rgba(0,0,0,0.75), 0 10px 10px rgba(0,0,0,0.5);*/
+  background-image: linear-gradient(red, #FF5555 2%, #B30000 55%, red 98%);
+  box-shadow: 0 10px 10px rgba(0,0,0,0.5);
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: all 0.1s;
+  display: inline-block;
+  z-index: 1;
+}
+
+#joystick.left {
+  right: 20px;
+  left: -20px;
+  top: 4px;
+}
+
+#joystick.right {
+  right: -20px;
+  left: 20px;
+  top: 4px;
+}
+
+#joystick.up {
+  bottom: -7px;
+  top: 7px;
+}
+
+#joystick.down {
+  bottom: -20px;
+  top: 20px;
+}
+
+.stick {
+  width: 5px;
+  height: 25px;
+  background: #6f7377;
+  position: absolute;
+  top: 35px;
+  left: 15px;
+  z-index: 1;
+  transition: all 0.1s;
+}
+
+#joystick.left + .stick {
+  transform: rotate(-30deg);
+  left: 9px;
+}
+
+#joystick.right + .stick {
+  transform: rotate(30deg);
+  left: 21px;
+}
+
+#fire {
+  background: #f00;
+  width: 30px;
+  height: 20px;
+  border-radius: 50%;
+  border: 0;
+  margin-left: 117px;
+  /*background-image: linear-gradient(red, #B30000 2%, #FF5555 55%, red 98%);*/
+  background-image: linear-gradient(red, #FF5555 2%, #B30000 55%, red 98%);
+  box-shadow: 0px 3px 0px #b30000;
+  position: absolute;
+  border: 1px solid #B30000;
+}
+
+#fire.active {
+  box-shadow: none;
+  top: 42px;
+}
+
+.button-holder {
+  position: absolute;
+  z-index: -1;
+  width: 36px;
+  height: 26px;
+  border-radius: 50%;
+  border: 10px solid $base-color;
+  background: #f00;
+  top: 41px;
+  left: 115px;
+  box-sizing: border-box;
+}
+
+.arcade {
+  background: url(/assets/arcade.svg) no-repeat center;
+  height: 100%;
+  background-size: 600px;
+  background-position: center -100px;
+  position: relative;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.c {
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  height: 350px;
+  background: black;
+  display: inline-block;
+}
+
+.c:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient( to bottom, rgba(0,0,0,0.25), transparent 1px);
+  background-size: 100% 2px;
+  z-index: 1;
+}
+
+.controls {
+  position: absolute;
+  bottom: 174px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.plate {
+  position: absolute;
+  width: 60px;
+  height: 45px;
+  border-radius: 50%;
+  background: tint($base-color, 20%);
+  left: -12px;
+  top: 38px;
+}
+
+.plate:before {
+  content: '';
+  width: 30px;
+  height: 20px;
+  border-radius: 50%;
+  background: $base-color;
+  display: block;
+  top: 11px;
+  left: 14px;
+  position: absolute;
+  border: 1px solid #222A2C;
+}
+
+.game {
+  display: inline-block;
+  width: 30.956%;
+  height: 30.29%;
+  padding: 5px;
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  background: transparent;
+  box-sizing: content-box;
+}
+
+.sro {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.text {
+  color: white;
+  font-family: arial;
+  position: absolute;
+  width: 110px;
+  font-size: 15px
+}
+
+.fire-text {
+  left: 78px;
+  top: 73px;
+}
+
+.up {
+  top: 19px;
+  left: -37px;
+}
+
+.right {
+  top: 51px;
+  left: 10px;
+}
+
+.down {
+  top: 88px;
+  left: -37px;
+}
+
+.left {
+  top: 51px;
+  left: -129px;
+  text-align: right;
+}
