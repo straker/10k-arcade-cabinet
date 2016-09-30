@@ -14,7 +14,7 @@ body {
   background: linear-gradient(to bottom, #f6d9ba 32%, #fcd932 32%, #fcd932 38%, #e40074 38%, #e40074 44%, #75deaa 44%, #75deaa 50%, #df81fc 50%, #df81fc 56%, #eea942 56%, #eea942 62%, #7e90e9 62%, #7e90e9 68%, #f6d9ba 68%); }
 
 main {
-  background: url(/media/bg.png); }
+  background: url(../media/bg.png); }
 
 button {
   border: 0; }
@@ -32,7 +32,7 @@ canvas {
 
 /* arcade */
 .a {
-  background: url(/media/arcade.svg) no-repeat center;
+  background: url(../media/arcade.svg) no-repeat center;
   height: 100%;
   background-size: 100%;
   background-position: center -27px;

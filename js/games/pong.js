@@ -48,9 +48,9 @@ game.pong = (function() {
       request.send();
     }
 
-    getSound('/media/blip.mp3', 'blip');
-    getSound('/media/bounce.mp3', 'bounce');
-    getSound('/media/wallbounce.mp3', 'wallbounce');
+    getSound('media/blip.mp3', 'blip');
+    getSound('media/bounce.mp3', 'bounce');
+    getSound('media/wallbounce.mp3', 'wallbounce');
   }
   catch (e) {
     canPlaySound = false;

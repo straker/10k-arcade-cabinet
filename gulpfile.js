@@ -75,7 +75,7 @@ gulp.task('dist:media', function() {
     .pipe(gulp.dest('./dist/media'));
 });
 
-gulp.task('dist', ['dist:html', 'dist:js', 'dist:sass', 'dist:css', 'dist:media'], function() {
+gulp.task('dist', ['scripts', 'dist:html', 'dist:js', 'dist:sass', 'dist:css', 'dist:media'], function() {
   // only show files that display on the main page as everything else is lazy loaded
   return gulp.src(['dist/index.html', 'dist/styles/arcade.css', 'dist/js/kontra.min.js', 'dist/js/arcade.js', 'dist/js/preview.js', 'dist/media/bg.png', 'dist/media/arcade.svg'])
     .pipe(size({
