@@ -27,9 +27,9 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('./js'));
 });
 
-gulp.task('build:html', function() {
-  return gulp.src(['**/*.html', '!node_modules/**', '!build/**', '!bower_components/**'])
-    .pipe(changed('./build'))
+gulp.task('dist:html', function() {
+  return gulp.src(['**/*.html', '!node_modules/**', '!dist/**', '!bower_components/**'])
+    .pipe(changed('./dist'))
     .pipe(plumber())
     .pipe(htmlmin({
       collapseWhitespace: true,
@@ -41,56 +41,48 @@ gulp.task('build:html', function() {
       removeStyleLinkTypeAttributes: true
     }))
     .pipe(plumber.stop())
-    .pipe(gulp.dest('./build'));
+    .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build:js', function() {
-  return gulp.src(['js/*.js'])
-    .pipe(changed('./build'))
+gulp.task('dist:js', function() {
+  return gulp.src(['js/**/*.js', '!js/preview/*.js'])
+    .pipe(changed('./dist'))
     .pipe(plumber())
     .pipe(uglify())
     .pipe(plumber.stop())
-    .pipe(gulp.dest('./build/js'));
+    .pipe(gulp.dest('./dist/js'));
 });
 
-gulp.task('build:sass', function() {
+gulp.task('dist:sass', function() {
   return gulp.src(['sass/*.scss'])
-    .pipe(changed('./build'))
+    .pipe(changed('./dist'))
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./styles'));
 });
 
-gulp.task('build:css', function() {
-  return gulp.src(['**/*.css', '!node_modules/**', '!build/**'])
-    .pipe(changed('./build'))
+gulp.task('dist:css', function() {
+  return gulp.src(['**/*.css', '!node_modules/**', '!dist/**'])
+    .pipe(changed('./dist'))
     .pipe(plumber())
     .pipe(cleanCSS())
     .pipe(plumber.stop())
-    .pipe(gulp.dest('./build'));
+    .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build:media', function() {
+gulp.task('dist:media', function() {
   return gulp.src(['media/*.*'])
-    .pipe(changed('./build'))
-    .pipe(gulp.dest('./build/media'));
+    .pipe(changed('./dist'))
+    .pipe(gulp.dest('./dist/media'));
 });
 
-gulp.task('build', ['build:html', 'build:js', 'build:sass', 'build:css', 'build:media'], function() {
+gulp.task('dist', ['dist:html', 'dist:js', 'dist:sass', 'dist:css', 'dist:media'], function() {
   // only show files that display on the main page as everything else is lazy loaded
-  return gulp.src(['build/index.html', 'build/styles/arcade.css', 'build/js/kontra.min.js', 'build/js/arcade.js', 'build/js/preview.js', 'build/media/bg.png', 'build/media/arcade.svg'])
+  return gulp.src(['dist/index.html', 'dist/styles/arcade.css', 'dist/js/kontra.min.js', 'dist/js/arcade.js', 'dist/js/preview.js', 'dist/media/bg.png', 'dist/media/arcade.svg'])
     .pipe(size({
       showFiles: true,
       gzip: true
     }));
 });
-
-// gulp.task('sizeHomePage', ['build'], function() {
-//   return gulp.src(['build/index.html', 'build/styles/arcade.css', 'build/js/kontra.min.js', 'build/js/scripts.js', 'build/js/preview.js', 'build/media/bg.png', 'build/media/arcade.svg'])
-//     .pipe(size({
-//       showFiles: true,
-//       gzip: true
-//     }));
-// });
 
 gulp.task('connect', function() {
   browserSync.init({
@@ -103,9 +95,9 @@ gulp.task('connect', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('js/**/*.js', ['lint', 'scripts', 'build']);
-  gulp.watch(['**/*.html', '!node_modules/**'], ['build']);
-  gulp.watch('sass/*.scss', ['build'])
+  gulp.watch('js/**/*.js', ['lint', 'scripts', 'dist']);
+  gulp.watch(['**/*.html', '!node_modules/**'], ['dist']);
+  gulp.watch('sass/*.scss', ['dist'])
 });
 
-gulp.task('default', ['lint', 'scripts', 'build', 'connect', 'watch']);
+gulp.task('default', ['lint', 'scripts', 'dist', 'connect', 'watch']);
