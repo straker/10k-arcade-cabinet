@@ -1,5 +1,5 @@
 /* elements */
-html, body {
+html, body, main {
   height: 100%;
   overflow: hidden;
   -webkit-user-select: none;
@@ -7,6 +7,15 @@ html, body {
   -ms-user-select: none;
   user-select: none;
   cursor: default;
+  margin: 0;
+}
+
+body {
+  background:linear-gradient(to bottom, #f6d9ba 32%,#fcd932 32%,#fcd932 38%,#e40074 38%,#e40074 44%,#75deaa 44%,#75deaa 50%,#df81fc 50%,#df81fc 56%,#eea942 56%,#eea942 62%,#7e90e9 62%,#7e90e9 68%,#f6d9ba 68%);
+}
+
+main {
+  background:url(/assets/bg.png);
 }
 
 button {
@@ -32,10 +41,10 @@ canvas {
 
 /* arcade */
 .a {
-  background: url(../arcade.png) no-repeat center;
+  background: url(/assets/arcade.svg) no-repeat center;
   height: 100%;
   background-size: 600px;
-  background-position: center -100px;
+  background-position: center -16px;
   position: relative;
 }
 
