@@ -8,18 +8,14 @@ var NUM_ROWS = 3;
 var GAME_WIDTH = (CANVAS_WIDTH - GAME_PADDING * GAMES_PER_ROW * 2) / GAMES_PER_ROW | 0;
 var GAME_HEIGHT = (CANVAS_HEIGHT - GAME_PADDING * NUM_ROWS * 2) / NUM_ROWS | 0;
 
-console.log('width:', GAME_WIDTH);
-console.log('height:', GAME_HEIGHT);
-
 // references
-var querySelector = document.querySelector.bind(document);
 var sprite = kontra.sprite;
 
+// variables
 var selection = 0;
 var debounce = 1;
 var games = [];
-var gameBtns = document.querySelectorAll('.game');
-var upPressed, rightPressed, downPressed, leftPressed;
+var gameBtns = document.querySelectorAll('.gb');
 
 for (var i = 0; i < gameBtns.length; i++) {
   // bind i
@@ -30,22 +26,45 @@ for (var i = 0; i < gameBtns.length; i++) {
   })(i);
 }
 
-/**
- * Convert degrees to radians.
- * @param {number} deg - Degrees.
- */
-function degToRad(deg) {
-  return deg * Math.PI / 180;
+// throttle resize event
+window.addEventListener('resize', resizeThrottler, false);
+
+var resizeTimeout;
+function resizeThrottler() {
+  // ignore resize events as long as an actualResizeHandler execution is in the queue
+  if ( !resizeTimeout ) {
+    resizeTimeout = setTimeout(function() {
+      resizeTimeout = null;
+      actualResizeHandler();
+
+     // The actualResizeHandler will execute at a rate of 15fps
+     }, 66);
+  }
 }
 
-// reset all games
+function actualResizeHandler() {
+  var width = parseInt(getComputedStyle(kontra.canvas).width);
+  var height = parseInt(getComputedStyle(kontra.canvas).height);
+
+  for (var i = 0; i < gameBtns.length; i++) {
+    gameBtns[i].style.width = width * .30956 + 'px';
+    gameBtns[i].style.height = height * .3029 + 'px';
+    gameBtns[i].style.padding = width * .0119 + 'px';
+  }
+}
+
+/**
+ * Reset all previews.
+ */
 function triggerReset() {
   for (var i = 0; i < games.length; i++) {
     games[i].reset();
   }
 }
 
-// game was selected
+/**
+ * Lazy load the selected game and start it.
+ */
 function gameSelected() {
   var selectedGame = gameBtns[selection].getAttribute('data-game');
 
@@ -62,15 +81,29 @@ function gameSelected() {
   }
 }
 
-// load a game
+/**
+ * Load a game.
+ */
 function loadGame(selectedGame) {
   gameBtns[selection].blur();
   gameBtns[selection].setAttribute('tabindex', -1);
   gameBtns[selection].removeAttribute('aria-selected');
 
   game.loop.stop();
+  game.selectedGame = selectedGame;
   selectedGame.start();
+  kontra.canvas.setAttribute('tabindex', 0);
+  kontra.canvas.focus();
 }
+
+/**
+ * Go back to the preview menu.
+ */
+game.goBack = function() {
+  game.loop.start();
+  gameBtns[selection].focus();
+  document.querySelector('#at').innerHTML = '';
+};
 
 // --------------------------------------------------
 // GAME_LOOP
@@ -81,10 +114,12 @@ game.loop = kontra.gameLoop({
 
     debounce += dt;
 
+    // update each preview
     for (var i = 0; i < games.length; i++) {
       games[i].update(dt);
     }
 
+    // debounce user input
     if (debounce > 0.25) {
       if (game.rightPressed) {
         gameBtns[selection].setAttribute('tabindex', -1);
@@ -106,6 +141,7 @@ game.loop = kontra.gameLoop({
 
       if (game.enterPressed) {
         gameSelected();
+        debounce = 0;
       }
     }
 

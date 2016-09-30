@@ -9,6 +9,8 @@ var gzip = require('gulp-gzip');
 var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat-util');
 
+var browserSync = require('browser-sync').create();
+
 gulp.task('lint', function() {
   return gulp.src(['js/*.js', '!js/*.min.js'])
     .pipe(eslint())
@@ -20,8 +22,7 @@ gulp.task('scripts', function() {
     .pipe(concat('preview.js', {sep: '\n\n'}))
     .pipe(concat.header('(function(window, document, kontra) {\n'))
     .pipe(concat.footer('\n})(window, document, kontra);'))
-    .pipe(gulp.dest('./js'))
-    .pipe(connect.reload());
+    .pipe(gulp.dest('./js'));
 });
 
 gulp.task('build:html', function() {
@@ -59,7 +60,12 @@ gulp.task('build:css', function() {
     .pipe(gulp.dest('./build'));
 });
 
-gulp.task('build', ['build:html', 'build:js', 'build:css'], function() {
+gulp.task('build:sounds', function() {
+  return gulp.src('sounds/*.mp3')
+    .pipe(gulp.dest('./build/sounds'));
+});
+
+gulp.task('build', ['build:html', 'build:js', 'build:css', 'build:sounds'], function() {
   return gulp.src('build/**/*.*')
     .pipe(size({
       showFiles: true,
@@ -68,8 +74,11 @@ gulp.task('build', ['build:html', 'build:js', 'build:css'], function() {
 });
 
 gulp.task('connect', function() {
-  connect.server({
-    livereload: true
+  browserSync.init({
+    port: 8080,
+    server: {
+      baseDir: "./",
+    }
   });
 });
 

@@ -1,20 +1,111 @@
 window.game = (function(game) {
   kontra.init();
 
-  var fireBtn = document.querySelector('#fire');
-  var joystick = document.querySelector('#joystick');
-  var gameContainer = document.querySelector('.c');
+  // references
+  var isPressed = kontra.keys.pressed;
+  var joystick = document.querySelector('#j');
+  var fireBtn = document.querySelector('#f');
+  var escBtn = document.querySelector('#m');
 
+  // variables
+  var startX = 0;
+  var startY = 0;
+  var distY = 0;
+  var distX = 0;
+  var firePressed = false;
+
+  // prevent scrolling the page
+  document.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+  });
+  document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+  });
+  document.addEventListener('touchend', function(e) {
+    e.preventDefault();
+  });
+
+  // joystick touch events
+  joystick.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    var touchobj = e.changedTouches[0];
+    startX = parseInt(touchobj.clientX);
+    startY = parseInt(touchobj.clientY);
+  });
+
+  joystick.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    var touchobj = e.changedTouches[0];
+    distX = parseInt(touchobj.clientX) - startX;
+    distY = parseInt(touchobj.clientY) - startY;
+  });
+
+  joystick.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    distX = 0;
+    distY = 0;
+    startX = 0;
+    startY = 0;
+  });
+
+  // fire button touch events
+  fireBtn.addEventListener('touchstart', function() {
+    firePressed = true;
+  });
+
+  fireBtn.addEventListener('touchend', function() {
+    firePressed = false;
+  });
+
+  /**
+   * Update the key state every frame.
+   */
   game.updateKeys = function updateKeys() {
-    // can use arrow keys, wasd, or zqsd
+    // can use arrow keys, wasd, zqsd, or touch
     // @see http://xem.github.io/articles/#jsgamesinputs
-    game.enterPressed = kontra.keys.pressed('space') || kontra.keys.pressed('enter');
-    game.upPressed = kontra.keys.pressed('up') || kontra.keys.pressed('w') ||
-                    kontra.keys.pressed('z');
-    game.rightPressed = kontra.keys.pressed('right') || kontra.keys.pressed('d');
-    game.downPressed = kontra.keys.pressed('down') || kontra.keys.pressed('s');
-    game.leftPressed = kontra.keys.pressed('left') || kontra.keys.pressed('a') ||
-                      kontra.keys.pressed('q');
+    game.enterPressed = isPressed('space') || isPressed('enter') ||
+                        firePressed;
+
+    game.escPressed = isPressed('esc');
+
+    game.upPressed = isPressed('up') || isPressed('w') ||
+                     isPressed('z') ||
+                     (startY && distY < 0 && Math.abs(distY) > Math.abs(distX));
+
+    game.rightPressed = isPressed('right') || isPressed('d') ||
+                        (startX && distX > 0 && Math.abs(distX) > Math.abs(distY));
+
+    game.downPressed = isPressed('down') || isPressed('s') ||
+                       (startY && distY > 0 && Math.abs(distY) > Math.abs(distX));
+
+    game.leftPressed = isPressed('left') || isPressed('a') ||
+                       isPressed('q') ||
+                       (startX && distX < 0 && Math.abs(distX) > Math.abs(distY));
+
+    // joystick
+    if (game.upPressed) {
+      joystick.classList.remove('d');
+      joystick.classList.add('u');
+    }
+    else if (game.downPressed) {
+      joystick.classList.remove('u');
+      joystick.classList.add('d');
+    }
+    else {
+      joystick.classList.remove('u', 'd');
+    }
+
+    if (game.leftPressed) {
+      joystick.classList.remove('r');
+      joystick.classList.add('l');
+    }
+    else if (game.rightPressed) {
+      joystick.classList.remove('l');
+      joystick.classList.add('r');
+    }
+    else {
+      joystick.classList.remove('l', 'r');
+    }
 
     // fire button
     if (game.enterPressed) {
@@ -25,29 +116,12 @@ window.game = (function(game) {
       fireBtn.classList.remove('active');
     }
 
-    // joystick
-    if (game.upPressed) {
-      joystick.classList.remove('down');
-      joystick.classList.add('up');
-    }
-    else if (game.downPressed) {
-      joystick.classList.remove('up');
-      joystick.classList.add('down');
+    if (game.escPressed) {
+      escBtn.click();
+      escBtn.classList.add('active');
     }
     else {
-      joystick.classList.remove('up', 'down');
-    }
-
-    if (game.leftPressed) {
-      joystick.classList.remove('right');
-      joystick.classList.add('left');
-    }
-    else if (game.rightPressed) {
-      joystick.classList.remove('left');
-      joystick.classList.add('right');
-    }
-    else {
-      joystick.classList.remove('left', 'right');
+      escBtn.classList.remove('active');
     }
   };
 

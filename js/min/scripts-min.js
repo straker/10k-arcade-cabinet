@@ -1,1 +1,0 @@
-!function(){for(var e=document.querySelectorAll("canvas"),t=0;t<e.length;t++)e[t].width=160,e[t].height=120}();

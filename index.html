@@ -6,38 +6,44 @@
 		<link rel="stylesheet" href="styles.css">
 		<script src="js/kontra.min.js"></script>
 	</head>
-	<body>
-		<div class="arcade">
+	<body ontouchstart="">
+		<div class="a">
+			<h1>10Kb Arcade</h1>
 
-			<div class="c" role="application">
-				<canvas id="screen" width="420" height="350"></canvas>
+			<div class="cw">
+				<canvas id="s" width="420" height="350" aria-describedby="at"></canvas>
+				<div class="sro" id="at"></div>
 
-				<!-- game selection acts like a simple tab list for a11y -->
-				<button data-game="helicoptor" class="game" tabindex="0" aria-selected="true"><span class="sro">Play Helicopter</span></button><!--
-				--><button data-game="pong" class="game" tabindex="-1"><span class="sro">Play Pong</span></button><!--
-				--><button data-game="snake" class="game" tabindex="-1"><span class="sro">Play Snake</span></button>
+				<div class="gbw" role="application">
+					<!-- game selection acts like a simple tab list for a11y -->
+					<button data-game="helicoptor" class="gb" tabindex="0" aria-selected="true"><span class="sro">Play Helicopter</span></button><!--
+					--><button data-game="pong" class="gb" tabindex="-1"><span class="sro">Play Pong (blind accessible)</span></button><!--
+					--><button data-game="snake" class="gb" tabindex="-1"><span class="sro">Play Snake</span></button>
+				</div>
 			</div>
 
-			<div class="controls">
-				<div id="joystick"></div>
+			<div class="c">
+				<div id="j"></div>
 				<!-- <div class="stick"></div> -->
-				<div class="plate"></div>
-				<div class="joystick-text">
-					<div class="up text">▲<br>(<kbd>W</kbd>, <kbd>Z</kbd>)</div>
-					<div class="right text">&#9658<br>(<kbd>D</kbd>)</div>
-					<div class="down text">▼<br>(<kbd>S</kbd>)</div>
-					<div class="left text">&#9668 <br>(<kbd>A</kbd>, <kbd>Q</kbd>)</div>
-				</div>
+				<div class="p"></div>
+				<div class="ut t" aria-hidden="true">▲<br>(<kbd>W</kbd>, <kbd>Z</kbd>)</div>
+				<div class="rt t" aria-hidden="true">&#9658<br>(<kbd>D</kbd>)</div>
+				<div class="dt t" aria-hidden="true">▼<br>(<kbd>S</kbd>)</div>
+				<div class="lt t" aria-hidden="true">&#9668 <br>(<kbd>A</kbd>, <kbd>Q</kbd>)</div>
 
-				<div id="fire"></div>
-				<div class="button-holder"></div>
-				<div class="fire-text text">Fire<br>(<kbd>space</kbd>, <kbd>enter</kbd>)</div>
+				<button tabindex="-1" id="f" class="b"><span class="sro">Fire</span></button>
+				<div class="bh"></div>
+				<div class="ft t" aria-hidden="true">Fire<br>(<kbd>space</kbd>, <kbd>enter</kbd>)</div>
+
+				<button tabindex="-1" id="m" class="b"><span class="sro">Menu</span></button>
+				<div class="bh bw"></div>
+				<div class="mt t" aria-hidden="true">Menu<br>(<kbd>esc</kbd>)</div>
 			</div>
 
 		</div>
 		<script src="js/scripts.js"></script>
 		<script src="js/preview.js"></script>
-		<!--<script src="js/pong.js"></script>
+		<!-- <script src="js/pong.js"></script>
 		<script>game.pong.start();</script> -->
 	</body>
 </html>
