@@ -52,6 +52,8 @@ game.helicopter = (function() {
     gapX = kontra.canvas.width / 2 - gapLength / 2;
     distance = 0;
 
+    gaps.length = 0;
+
     // fill gaps
     for (var i = 0; i < numGaps; i++) {
       gapX = getRandomInt(gapX - 2, gapX + 2);
