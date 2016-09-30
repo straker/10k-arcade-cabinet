@@ -1,0 +1,175 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+//@import "compass/reset";
+@import "../bower_components/susy/sass/susy";
+@import "compass/css3";
+@import "compass/css3/transform";
+@import "../bower_components/breakpoint-sass/stylesheets/breakpoint";
+//@import "arcade.scss";
+
+$susy: (
+  columns: 12,
+  gutters: 1,
+  container: 1140px,
+);
+
+$font-size: 18px;
+$global-padding: 2.5em;
+
+$bg-c: #f6d9ba;
+$p-c: #fcd932;
+$s-c: #e40074;
+$h-c: #75deaa;
+$m-c: #df81fc;
+$b-c: #eea942;
+$t-c: #7e90e9;
+
+/*
+$bg-c: #fff;
+$p-c: #000;
+$s-c: tint($p-c, 10%);
+$h-c: tint($p-c, 20%);
+$m-c: tint($p-c, 30%);
+$b-c: tint($p-c, 40%);
+$t-c: tint($p-c, 50%);
+*/
+
+$rc: $bg-c, $p-c, $s-c, $h-c, $m-c, $b-c, $t-c;
+$color-w: 6%;
+$colorList: ();
+
+@for $i from 1 through length($rc) {
+	$nc: $i + 1;
+	@if $nc > length($rc) {
+		$nc: 1;
+	}
+	@else {
+	}
+	$color: nth($rc, $i);
+	$color-n: nth($rc, $nc);
+	$position: ((100% - $color-w * (length($rc) - 1)) / 2) + ($color-w * ($i - 1));
+	$colorList: append($colorList, $color $position, comma);
+	$colorList: append($colorList, $color-n $position, comma);
+}
+
+
+// MOBILE FIRST
+
+* {
+	box-sizing: border-box;
+	margin:0;
+	padding:0;
+	border:0;
+	font:inherit;
+	font-size:100%;
+	vertical-align:baseline;
+}
+
+body, html {
+	font-family: Courier;
+	font-size: 18px;
+	line-height: 1.4em;
+	margin: 0;
+	padding: 0;
+	background:    -moz-linear-gradient(left, $colorList);
+	background: -webkit-linear-gradient(left, $colorList);
+	background:     linear-gradient(to right, $colorList);
+}
+
+header, main, footer {
+	background: url(../bg.png);
+}
+
+header, footer {
+	padding: $global-padding;
+}
+
+header {
+	text-align: center;
+	height: 200px;
+}
+
+h1, h2 {
+	font-weight: bold;
+	line-height: 1em;
+	text-shadow: .05em .08em 0px #fff;
+	//text-shadow: .05em 0 0 #fff;
+}
+
+h1 {
+	font-size: 4em;
+}
+
+h2 {
+	font-size: 2.5em;
+}
+
+p {
+	margin-top: $global-padding/3;
+}
+
+.r + .r {
+	margin-top: $global-padding*12;
+}
+
+.r {
+	width: 100%;
+	display: block;
+	padding: $global-padding $global-padding 0 $global-padding;
+	border: 8px solid $bg-c;
+	border-left: 0;
+	border-right: 0;
+	overflow: hidden;
+}
+
+.gs {
+	background: #fff;
+	overflow: hidden;
+}
+
+.i {
+	max-height: 402px;
+	padding: $global-padding;
+}
+
+footer {
+	text-align: center;
+}
+
+
+// DESKTOP STYLES
+
+@include breakpoint(720px) {
+	
+	.r {
+		padding-top: 0;
+	}
+
+	.g, .i {
+		@include span(6);
+	}
+	
+	.i {
+		max-height: 402px;
+		padding-left: 0;
+	}
+	
+	.r:nth-child(odd) .i, .r:nth-child(even) .g {
+		@include omega;
+	}
+	
+	.r:nth-child(even) .i {
+		padding-left: $global-padding;
+		padding-right: 0;
+	}
+	
+	.gs {
+		margin: 0 auto;
+		max-width: 1140px;
+	}
+	
+
+}
